@@ -204,18 +204,20 @@ def fbconnect():
         'web']['app_id']
     app_secret = json.loads(
         open('fb_client_secrets.json', 'r').read())['web']['app_secret']
-    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (
+    url = 'https://graph.facebook.com/v2.8/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (
         app_id, app_secret, access_token)
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
 
     # Use token to get user info from API
-    userinfo_url = "https://graph.facebook.com/v2.4/me"
+    #userinfo_url = "https://graph.facebook.com/v2.4/me"
     # strip expire tag from access token
-    token = result.split("&")[0]
+    #token = result.split("&")[0]
+    data = json.loads(result)
+    # Extract the access token from response
+    token = 'access_token=' + data['access_token']
 
-
-    url = 'https://graph.facebook.com/v2.4/me?%s&fields=name,id,email' % token
+    url = 'https://graph.facebook.com/v2.8/me?%s&fields=name,id,email' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     # print "url sent for API access:%s"% url
@@ -446,16 +448,16 @@ def disconnect():
     if 'provider' in login_session:
         if login_session['provider'] == 'google':
             gdisconnect()
-            del login_session['gplus_id']
-            del login_session['credentials']
-        if login_session['provider'] == 'facebook':
+            #del login_session['gplus_id']
+            #del login_session['credentials']
+        elif login_session['provider'] == 'facebook':
             fbdisconnect()
-            del login_session['facebook_id']
-        del login_session['username']
-        del login_session['email']
-        del login_session['picture']
-        del login_session['user_id']
-        del login_session['provider']
+            #del login_session['facebook_id']
+        #del login_session['username']
+        #del login_session['email']
+        #del login_session['picture']
+        #del login_session['user_id']
+        #del login_session['provider']
         login_session.clear()
         flash("You have successfully been logged out.")
         return redirect(url_for('showRestaurants'))
