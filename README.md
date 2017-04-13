@@ -41,4 +41,4 @@ $ localhost:5000
 ```
 in your browser.
 
-> To get the better experience in playing around the application, Try a fresh incognito window for every login and log out inorder to avoid stale cookies and cache to disturb the application.
+> To get the better experience in playing around the application, Try a fresh incognito window for every login and logout inorder to avoid stale cookies and cache to disturb the application.
